@@ -26,9 +26,9 @@ Using https://github.com/dg/twitter-php for Twitter connection (thanks!dg).
 
 == Screenshots ==
 
-1. /trunk/screenshots/example.png
-1. /trunk/screenshots/omtwitter-options.png
-1. /trunk/screenshots/tweets-category.png
+1. Example of frontend
+2. Options
+3. Tweets type in administration
 
 == Changelog ==
 
