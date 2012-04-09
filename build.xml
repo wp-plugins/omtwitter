@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="deploy" name="Deploy">
+  <target name="deploy">
+
+    <delete>
+      <fileset dir="./cache" includes="**/**"/>
+    </delete>
+
+    <zip destfile="omTwitter.zip" basedir="." includes="**/**" excludes="build.xml" />
+
+  </target>
+</project>

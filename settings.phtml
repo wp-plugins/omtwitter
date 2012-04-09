@@ -1,0 +1,170 @@
+<?php /** @var omTwitterOptions $options */ ?>
+<div class="wrap">
+  <div id="icon-options-general" class="icon32"><br></div>
+
+  <h2><?php _e('Twitter options', 'omt') ?></h2>
+
+  <? if ($message) { ?>
+  <div class="updated fade"><p><?= $message;?></p></div>
+  <? } ?>
+
+  <h3><?_e('Twitter application settings')?></h3>
+
+  <form method="post">
+    <input type="hidden" name="update" value="omTwitterOptions"/>
+  <table class="form-table">
+
+    <tr>
+      <th scope="row"><?php _e('Twitter', 'omt')?></th>
+      <td><a href="https://dev.twitter.com/apps/new" target="_blank"
+             class="button"><?php _e('Register new application', 'omt')?></a> <?php _e('or use', 'omt') ?> <a
+          href="https://dev.twitter.com/apps" target="_blank"><?php _e('existing keys and secrets') ?></a></td>
+    </tr>
+
+    <tr valign="top">
+      <th scope="row"><label for="consumer_key"><?php _e('Consumer key', 'omt')?></label></th>
+      <td><input type="text" name="consumer_key" size="60" id="consumer_key" autocomplete="off"
+                 value="<?= $options->consumer_key ?>"/>
+      </td>
+    </tr>
+
+    <tr valign="top">
+      <th scope="row"><label for="consumer_secret"></label><?php _e('Customer secret', 'omt')?></th>
+      <td><input type="text" name="consumer_secret" size="60" id="consumer_secret" autocomplete="off"
+                 value="<?= $options->consumer_secret; ?>"/>
+      </td>
+    </tr>
+
+    <tr valign="top">
+      <th scope="row"><label for="access_token"><?php _e('Access token', 'omt')?></label></th>
+      <td><input type="text" name="access_token" size="60" id="access_token" autocomplete="off"
+                 value="<?= $options->access_token ?>"/>
+      </td>
+    </tr>
+
+    <tr valign="top">
+      <th scope="row"><label for="access_token_secret"><?php _e('Access token secret', 'omt')?></label></th>
+      <td><input type="text" name="access_token_secret" size="60" id="access_token_secret"
+                 autocomplete="off"
+                 value="<?= $options->access_token_secret ?>"/>
+      </td>
+    </tr>
+
+    <tr valign="top">
+      <th scope="row"><label for="nick"><?php _e('Your Twitter name', 'omt')?></label>
+      </th>
+      <td><input type="text" name="nick" size="60" id="nick"
+                 autocomplete="off"
+                 value="<?= $options->nick ?>"/>
+      </td>
+    </tr>
+    <? if ($user) { ?>
+    <tr>
+      <th><? _e('User information', 'omt')?></th>
+      <td>
+        <h3 style="padding:0;margin: 0;font-size: 18px;"><?= $user->name ?></h3>
+
+        <p style="padding: 0; margin: 0;">
+          <img src="<?= $user->profile_image_url ?>" alt="" width="48" height="48"
+               style="float: left;padding: 7px 7px 7px 0;"/>
+          <?= $user->statuses_count ?> <? _e('tweets', 'omt')?><br/>
+          <strong><? _e('Following', 'omt')?></strong> <?= $user->friends_count ?>
+          <strong><? _e('Followers', 'omt')?></strong> <?= $user->followers_count ?> <br/>
+          <span style="font-style: italic;"><?= $user->description ?></span><br/>
+        </p>
+
+        <p style="margin: 0; padding: 0;clear: both;">
+          <strong><? _e('Registered', 'omt')?></strong>: <?= date('j. n. Y H:i:s', strtotime($user->created_at)); ?>
+          <br/></p>
+
+      </td>
+    </tr>
+    </table>
+    <? } ?>
+
+    <h3><?_e('Tweets backup post', 'omt')?></h3>
+    <table class="form-table">
+      <tr>
+        <th><? _e('Post from user', 'omt'); ?></th>
+        <td><? wp_dropdown_users('show=user_nicename&selected=' . $options->user); ?></td>
+      </tr>
+      <tr>
+        <th><? _e('Save to category', 'omt');?></th>
+        <td><? wp_dropdown_categories("name=category&hierarchical=1&hide_empty=0&show_count=1&selected=" . $options->category); ?></td>
+      </tr>
+      <tr valign="top">
+        <th scope="row"><label for="posttype"><?php _e('Save as Post Type', 'omt')?></label>
+        </th>
+        <td>
+          <select name="posttype" id="posttype">
+            <? foreach (get_post_types('') as $post_type) { ?>
+            <option
+                value="<?= $post_type ?>" <?= ($post_type == $options->posttype) ? 'selected="selected"' : ''?>><?= $post_type ?></option>
+            <? } ?>
+          </select>
+
+          <p><? _e('How to use', 'omt')?>: <a href="http://codex.wordpress.org/Post_Types"
+                                              target="_blank"><? _e('Custom Post Types', 'omt')?></a></p>
+        </td>
+
+      </tr>
+      <? $post_formats = get_theme_support('post-formats'); if (!empty($post_formats[0])) { ?>
+      <tr>
+        <th><? _e('Post format', 'omt') ?></th>
+        <td>
+          <select name="postformat" id="postformat">
+            <? foreach ($post_formats[0] as $post_format) { ?>
+            <option
+                value="<?= $post_format ?>" <?= ($post_format == $options->postformat) ? 'selected="selected"' : ''?>><?= $post_format ?></option>
+            <? } ?>
+          </select>
+
+          <p><? _e('How to use', 'omt') ?> <a href="http://codex.wordpress.org/Post_Formats"
+                                              target="_blank"><? _e('Post formats', 'omt')?></a></p>
+        </td>
+      </tr>
+      <? } ?>
+    </table>
+
+    <h3><?_e('Plugin setup', 'omt')?></h3>
+    <table class="form-table">
+      <tr>
+        <th><? _e('Sheduled backup', 'omt')?></th>
+        <td>
+          <p>
+            <? _e('We download last 20 Tweets every hour.')?><br/>
+            <? _e('Next backup', 'omt')?>: <?= date('j. n. Y H:i:s', wp_next_scheduled('tweets_backup_cron_hook'));?>
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <th><? _e('Tools', 'omt')?></th>
+        <td>
+          <a href="<?= admin_url('options-general.php?page=omTwitterOptions&action=backup') ?>"
+             class="button"><? _e('Backup Tweets Now', 'omt')?></a>
+
+          <p>
+            <? _e('Backup all my Twets up to 3200 Tweet', 'omt');?> -
+            <a href="https://dev.twitter.com/discussions/276"
+               target="_blank"><? _e('more about Twitter API limit', 'omt');?></a>
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <th><? _e('Setup', 'omt');?></th>
+        <td><input type="checkbox" value="ok" name="ch_show_post_type"
+                   id="ch_show_post_type" <?= ($options->show_post_type) ? 'checked="checked"' : ''?>/>
+          <label for="ch_show_post_type"><? _e('Display Tweets post type in menu', 'omt')?></label>
+        </td>
+      </tr>
+    </table>
+
+
+    <p class="submit">
+      <input type="submit" class="button-primary" value="<?php _e('Save Changes', 'omt')?>"/>
+    </p>
+
+  </form>
+</div>
